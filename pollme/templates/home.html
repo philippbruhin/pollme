@@ -1,7 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/home_styles.css' %}">
+{% endblock %}
 
 {% block content %}
-
 <div class="container">
   <div class="row">
     <div class="col">
@@ -14,5 +18,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
