@@ -4,7 +4,7 @@
   <div class="container">
     <h1>{{ poll.text }} </h1>
 
-    <form action="" method="post">
+    <form action="{% url 'polls:vote' poll.id %}" method="post">
       {% csrf_token %}
 
       {% for choice in poll.choice_set.all %}
@@ -20,15 +20,6 @@
       <button type="submit" value="Vote" class="btn btn-primary">Vote</button>
 
     </form>
-
-
-
-
-
-
-
-
-
 
   </div>
 {% endblock %}
