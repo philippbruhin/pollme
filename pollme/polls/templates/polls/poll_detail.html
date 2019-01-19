@@ -2,24 +2,37 @@
 
 {% block content %}
   <div class="container">
-    <h1>{{ poll.text }} </h1>
+    <div class="row">
+        <div class="col">
+          <h1>{{ poll.text }} </h1>
 
-    <form action="{% url 'polls:vote' poll.id %}" method="post">
-      {% csrf_token %}
+          {% if messages %}
+              <div class="alert alert-danger" role="alert">
+                  <ul class="messages">
+                      {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+          {% endif %}
 
-      {% for choice in poll.choice_set.all %}
-      <div class="form-group">
-        <input type="radio"
-          name="choice"
-          id="choice{{ foorloop.counter}}"
-          value="{{ choice.id }}" />
-        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+          <form action="{% url 'polls:vote' poll.id %}" method="post">
+            {% csrf_token %}
+
+            {% for choice in poll.choice_set.all %}
+            <div class="form-group">
+              <input type="radio"
+                name="choice"
+                id="choice{{ foorloop.counter}}"
+                value="{{ choice.id }}" />
+              <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+            </div>
+            {% endfor %}
+
+            <button type="submit" value="Vote" class="btn btn-primary">Vote</button>
+
+          </form>
       </div>
-      {% endfor %}
-
-      <button type="submit" value="Vote" class="btn btn-primary">Vote</button>
-
-    </form>
-
+    </div>
   </div>
 {% endblock %}
