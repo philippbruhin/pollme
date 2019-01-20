@@ -10,6 +10,9 @@
   <div class="row">
     <div class="col">
       <div id="home-content">
+        {% if request.user.is_authenticated %}
+          Hi {{ request.user.username }}
+        {% endif %}
         <h1>PollMe - Get Started!</h1>
         <h3>Your Voice Matters</h3>
         <hr>
