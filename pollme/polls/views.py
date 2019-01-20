@@ -7,17 +7,17 @@ from django.urls import reverse
 
 from .models import Choice, Poll
 
+@login_required
 def polls_list(request):
     """
     Renders the polls_list.html template which lists all the 
     currently available polls.
     """
-    if not request.user.is_authenticated:
-        return redirect('{}?next={}'.format(settings.LOGIN_URL, request.path))
     polls = Poll.objects.all()
     context = {'polls': polls}
     return render(request, 'polls/polls_list.html', context)
 
+@login_required
 def poll_detail(request, poll_id):
     """
     Renders the poll_detail.html template which allows a user to vote
@@ -29,6 +29,7 @@ def poll_detail(request, poll_id):
     context = { 'poll': poll }
     return render(request, 'polls/poll_detail.html', context)
 
+@login_required
 def poll_vote(request, poll_id):
     # try:
     poll = get_object_or_404(Poll, id=poll_id)

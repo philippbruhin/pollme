@@ -15,7 +15,8 @@ def login_user(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            redirect_url = request.GET.get('next', 'home')
+            return redirect(redirect_url)
         else:
             messages.error(request, 'Bad username or password')
     return render(request, 'accounts/login.html', {})
