@@ -14,3 +14,19 @@ class UserRegistrationForm(forms.Form):
         if qs.exists():
             raise ValidationError('Emails is already registred.')
         return email
+
+    # def clean_password2(self):
+    #     p1 = self.cleaned_data['password1']
+    #     p2 = self.cleaned_data['password2']
+    #     if p1 != p2:
+    #         raise ValidationError("Password2 doesn't match Password1")
+    #     return p1
+
+    def clean(self):
+        cleaned_data = super().clean()
+        p1 = cleaned_data.get('password1')
+        p2 = cleaned_data.get('password2')
+
+        if p1 and p2:
+            if p1 != p2:
+                raise ValidationError("Passwords do not match")
