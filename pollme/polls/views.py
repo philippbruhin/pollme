@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
 from .models import Choice, Poll
@@ -10,6 +12,8 @@ def polls_list(request):
     Renders the polls_list.html template which lists all the 
     currently available polls.
     """
+    if not request.user.is_authenticated:
+        return redirect('{}?next={}'.format(settings.LOGIN_URL, request.path))
     polls = Poll.objects.all()
     context = {'polls': polls}
     return render(request, 'polls/polls_list.html', context)
