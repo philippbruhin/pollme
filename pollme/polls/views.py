@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
 from .models import Choice, Poll
+from .forms import PollForm
 
 @login_required
 def polls_list(request):
@@ -16,6 +17,12 @@ def polls_list(request):
     polls = Poll.objects.all()
     context = {'polls': polls}
     return render(request, 'polls/polls_list.html', context)
+
+@login_required
+def add_poll(request):
+    form = PollForm()
+    context = {'form': form}
+    return render(request, 'polls/add_poll.html', context)
 
 @login_required
 def poll_detail(request, poll_id):
