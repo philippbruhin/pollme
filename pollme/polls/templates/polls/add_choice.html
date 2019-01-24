@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
-        <h1>Edit poll</h1>
+        <h1>Add a new choice</h1>
         <form action="" method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -14,8 +14,7 @@
                     {{ field }}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{% url 'polls:add_choice' poll.id %}" class="btn btn-warning">Add choice</a>
+            <button type="submit" class="btn btn-primary">Add</button>
         </form>      
       </div>
     </div>
