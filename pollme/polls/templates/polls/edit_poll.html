@@ -5,8 +5,18 @@
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
         <h1>Edit poll</h1>
-        {{ poll }}
-        </form>       
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-warning">Add choice</button>
+        </form>      
       </div>
     </div>
   </div>

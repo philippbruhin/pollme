@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
 from .models import Choice, Poll
-from .forms import PollForm
+from .forms import PollForm, EditPollForm
 
 @login_required
 def polls_list(request):
@@ -49,7 +49,16 @@ def edit_poll(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
     if request.user != poll.owner:
         return redirect('/')
-    return render(request, 'polls/edit_poll.html', {'poll': poll})
+    if request.method == "POST":
+        form = EditPollForm(request.POST, instance=poll)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Poll edited succesful', extra_tags='alert alert-success')
+            return redirect('polls:list')
+    else:
+        form = EditPollForm(instance=poll)    
+    
+    return render(request, 'polls/edit_poll.html', {'form':form})
 
 
 @login_required
