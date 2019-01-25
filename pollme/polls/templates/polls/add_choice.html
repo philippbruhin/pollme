@@ -4,7 +4,13 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6 offset-sm-3">
-        <h1>Add a new choice</h1>
+        <h1>
+          {% if edit_mode %}
+            Edit choice
+          {% else %}
+            Add choice
+          {% endif %}
+        </h1>
         <form action="" method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -14,7 +20,20 @@
                     {{ field }}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">
+              {% if edit_mode %}
+                Edit
+              {% else %}
+                Add
+              {% endif %}
+            </button>
+            {% if edit_mode %}
+              <a href="{% url 'polls:choice_confirm_delete' choice.id %}"
+                  type="button"
+                  class='btn btn-danger'>
+                  <i class="far fa-trash-alt"></i> Delete
+              </a>
+            {% endif %}
         </form>      
       </div>
     </div>

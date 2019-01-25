@@ -79,6 +79,41 @@ def add_choice(request, poll_id):
     return render(request, 'polls/add_choice.html', {'form':form})
 
 @login_required
+def edit_choice(request, choice_id):
+    choice = get_object_or_404(Choice, id=choice_id)
+    poll = get_object_or_404(Poll, id=choice.poll.id)
+    if request.user != poll.owner:
+        return redirect('/')
+
+    if request.method == "POST":
+        form = ChoiceForm(request.POST, instance=choice)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Choice edited', extra_tags='alert alert-success')
+            return redirect('polls:list')
+    else:
+        form = ChoiceForm(instance=choice)
+    return render(request, 'polls/add_choice.html', {'form':form, 'edit_mode':True, 'choice':choice})
+
+@login_required
+def delete_choice(request, choice_id):
+    choice = get_object_or_404(Choice, id=choice_id)
+    poll = get_object_or_404(Poll, id=choice.poll.id)
+    if request.user != poll.owner:
+        return redirect('/')
+
+    if request.method == "POST":
+        choice.delete()
+        messages.success(
+                        request,
+                        'Choice Deleted Successfully',
+                        extra_tags='alert alert-success alert-dismissible fade show'
+                        )
+        return redirect('polls:list')
+
+    return render(request, 'polls/delete_choice_confirm.html', {'choice':choice})
+
+@login_required
 def poll_detail(request, poll_id):
     """
     Renders the poll_detail.html template which allows a user to vote
