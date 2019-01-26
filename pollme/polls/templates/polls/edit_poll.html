@@ -16,6 +16,8 @@
             {% endfor %}
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="{% url 'polls:add_choice' poll.id %}" class="btn btn-warning">Add choice</a>
+            <a href="{% url 'polls:poll_confirm_delete' poll.id %}" class='btn btn-danger'><i class="far fa-trash-alt"></i> Delete
+        </a>
         </form>
         <h3>Choices</h3>
         {% for choice in poll.choice_set.all %}
