@@ -147,6 +147,11 @@ def poll_detail(request, poll_id):
 def poll_vote(request, poll_id):
     # try:
     poll = get_object_or_404(Poll, id=poll_id)
+
+    if not poll.user_can_vote(request.user):
+        messages.error(request, 'Are you crazy? You have already voted on this Poll!')
+        return HttpResponseRedirect(reverse('polls:detail', args=(poll_id,)))    
+
     choice_id = request.POST.get('choice')
     if choice_id:
         choice = Choice.objects.get(id=choice_id)
