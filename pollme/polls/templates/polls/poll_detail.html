@@ -35,11 +35,22 @@
 
           </form>
 
-          {% for choice_dict in results %}
-            <div class="progress my-5">
-              <div class="progress-bar" role="progressbar" style="width: {{choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
-            </div>
-          {% endfor %}
+          {% if not user_can_vote %}
+
+              {% for choice_dict in results %}
+              <div class="row">
+                  <div class="col-sm-6">
+                  {{choice_dict.text}}
+                  <div class="progress my-3">
+                    <div class="progress-bar" role="progressbar" style="width: {{choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+          
+          {% else %}
+            <p>Vote to see results!</p>
+          {% endif %}
 
       </div>
     </div>
