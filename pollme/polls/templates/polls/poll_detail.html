@@ -16,6 +16,8 @@
               </div>
           {% endif %}
 
+
+          <p>{{poll}} - {{poll.num_votes}} votes</p>
           <form action="{% url 'polls:vote' poll.id %}" method="post">
             {% csrf_token %}
 
@@ -25,11 +27,11 @@
                 name="choice"
                 id="choice{{ foorloop.counter}}"
                 value="{{ choice.id }}" />
-              <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+              <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ choice.num_votes }}</label>
             </div>
             {% endfor %}
 
-            <button type="submit" value="Vote" class="btn btn-primary">Vote</button>
+            <button type="submit" value="Vote" class="btn btn-primary" {% if not user_can_vote %}disabled{% endif %}>Vote</button>
 
           </form>
       </div>
