@@ -34,6 +34,13 @@
             <button type="submit" value="Vote" class="btn btn-primary" {% if not user_can_vote %}disabled{% endif %}>Vote</button>
 
           </form>
+
+          {% for choice_dict in results %}
+            <div class="progress my-5">
+              <div class="progress-bar" role="progressbar" style="width: {{choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
+            </div>
+          {% endfor %}
+
       </div>
     </div>
   </div>
