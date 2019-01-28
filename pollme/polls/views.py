@@ -3,6 +3,7 @@ import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, render, redirect
@@ -18,10 +19,30 @@ def polls_list(request):
     currently available polls.
     """
     polls = Poll.objects.all()
+    search_term = ''
+
+    if 'text' in request.GET:
+        polls = polls.order_by('text')
+
+    if 'pub_date' in request.GET:
+        polls = polls.order_by('-pub_date')
+
+    if 'num_votes' in request.GET:
+        polls = polls.annotate(Count('vote')).order_by('-vote__count')
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        polls = polls.filter(text__icontains=search_term)
+
+
     paginator = Paginator(polls, 5)
     page = request.GET.get('page')
     polls = paginator.get_page(page)
-    context = {'polls': polls}
+
+    get_dict_copy = request.GET.copy()
+    params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
+
+    context = {'polls': polls, 'params': params, 'search_term': search_term}
     return render(request, 'polls/polls_list.html', context)
 
 @login_required
